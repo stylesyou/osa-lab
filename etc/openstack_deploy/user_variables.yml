@@ -1,0 +1,11 @@
+---
+
+## Debug and Verbose options.
+debug: false
+
+haproxy_ssl: False
+haproxy_stats_enabled: True
+haproxy_stats_bind_address: 192.168.100.11
+#horizon_ssl_self_signed_regen: true
+#openstack_external_ssl: false
+default_bind_mount_logs: false
