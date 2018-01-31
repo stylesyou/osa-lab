@@ -1,14 +1,14 @@
 ## On Deployment Node
 
 1. Clone rpc repo to deployment node
-
+```sh
   git clone https://github.com/rcbops/rpc-openstack /opt/rpc-openstack
-
+```
 2. cd /opt/rpc-openstack
-
+```sh
   export RPC_PRODUCT_RELEASE="newton"
   ./scripts/deploy.sh
-
+```
 3. Update package source lists:
 
   ```sh 
@@ -69,19 +69,25 @@
 
 10. Run the host setup playbook:
 
-  ```sh openstack-ansible setup-hosts.yml ```
+  ```sh 
+  $ openstack-ansible setup-hosts.yml 
+  ```
 
 11. Run the infrastructure setup playbook:
 
-  ```sh openstack-ansible setup-infrastructure.yml ```
+  ```sh 
+  $ openstack-ansible setup-infrastructure.yml 
+  ```
 
 12. Run the following command to verify the database cluster:
 
-```sh
+  ```sh
   $ ansible galera_container -m shell \
     -a "mysql -h localhost -e 'show status like \"%wsrep_cluster_%\";'"
-```
+  ```
 13. Run the OpenStack setup playbook:
 
-   ```sh  openstack-ansible setup-openstack.yml ```
+   ```sh  
+   $ openstack-ansible setup-openstack.yml 
+   ```
 
