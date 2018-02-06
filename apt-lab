@@ -1,0 +1,79 @@
+#################
+APTLY on Ubuntu
+################
+
+1. Install latest stable Aptly on Ubuntu16.04
+
+  # echo "deb http://repo.aptly.info/ squeeze main" > /etc/apt/source.list.d/aptly.list
+  # sudo apt-key adv --keyserver keys.gnupg.net --recv-keys 9E3E53F19C7DE460
+  # apt-get update
+  # apt-get install aptly
+
+2. Create GPG key to sigining published repositories.
+
+  # gpg --gen-key
+
+3. Create Mirror for Ubuntu Xenial
+
+  # aptly mirror create -architectures=amd64 -filter='Priority (required) | Priority (important) | Priority (standard)' xenial-main http://us.archive.ubuntu.com/ubuntu/ xenial main
+
+  # aptly mirror create -architectures=amd64 -filter='Priority (required) | Priority (important) | Priority (standard)' xenial-updates http://us.archive.ubuntu.com/ubuntu/ xenial-updates main
+
+  # aptly mirror create -architectures=amd64 -filter='Priority (required) | Priority (important) | Priority (standard)' xenial-security http://security.ubuntu.com/ubuntu xenial-security main
+
+4. updating the mirrors
+
+  # aptly mirror update xenial-main
+  # aptly mirror update xenial-updates
+  # aptly mirror update xenial-security
+
+5. TAKING SNAPSHOTS
+
+  # It’s time take snapshots of the mirrors to preserve exact current mirror state.
+
+  # aptly snapshot create xenial-main-20180206 from mirror xenial-main
+  # aptly snapshot create xenial-updates-20180206 from mirror xenial-updates
+  # aptly snapshot create xenial-security-20180206 from mirror xenial-security
+
+6. MERGING SNAPSHOTS
+
+  # Now we can merge snapshots into one, producing "xenial with security updates applied"
+
+  # aptly snapshot merge -latest xenial-final-20180206 xenial-main-20180206 xenial-updates-20180206 xenail-security-20180206
+
+  ## Flag -latest chooses merge strategy: package with latest version “wins”.
+
+7. PUBLISHING REPOSITORY
+
+  # Final step: publishing our snapshot as Debian repository, ready to be consumed by apt-get:
+
+  # aptly publish snapshot -distribution=xenial wheezy-final-20180206
+
+8. The repository is published to ~/.aptly/public/ directory. You can start any HTTP server to serve this directory as static files, or use aptly built-in webserver for testing:
+
+  # aptly serve
+
+9. visalize the objects created and dependencies:
+
+  # aptly graph
+
+
+###################
+Using Repositories
+###################
+
+1. Import public part of the key that was used to sign the repository into trusted apt keyring on target machine
+
+  # gpg --export --armor > my_key.pub
+
+  # Copy my_key.pub to target machine and import it into apt keyring
+
+  # sudo apt-key add my_key.pub
+
+3. Edit /etc/apt/sources.list and comment out default sources and add aptly server url
+
+  # deb http://192.168.100.2:8080/ xenial main
+
+4. Repository is ready to use.
+
+  # apt-get update 
