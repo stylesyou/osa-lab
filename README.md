@@ -11,10 +11,10 @@
 ```
 3. Update package source lists:
 
-  ```sh 
+  ```sh
   $ apt-get update
   ## Upgrade the system packages and kernel:
- 
+
   $ apt-get dist-upgrade
   ## Reboot the host.
   ```
@@ -50,7 +50,7 @@
 
       haproxy_ssl: false
   ```
-      
+
 7. Generate random passwords
 
   ```sh
@@ -69,14 +69,14 @@
 
 10. Run the host setup playbook:
 
-  ```sh 
-  $ openstack-ansible setup-hosts.yml 
+  ```sh
+  $ openstack-ansible setup-hosts.yml
   ```
 
 11. Run the infrastructure setup playbook:
 
-  ```sh 
-  $ openstack-ansible setup-infrastructure.yml 
+  ```sh
+  $ openstack-ansible setup-infrastructure.yml
   ```
 
 12. Run the following command to verify the database cluster:
@@ -88,6 +88,7 @@
 13. Run the OpenStack setup playbook:
 
    ```sh  
-   $ openstack-ansible setup-openstack.yml 
+   $ openstack-ansible setup-openstack.yml
    ```
 
+### Upgrade from Ocata to Pike

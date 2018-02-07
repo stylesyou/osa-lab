@@ -76,4 +76,34 @@ Using Repositories
 
 4. Repository is ready to use.
 
-  # apt-get update 
+  # apt-get update
+
+
+######################
+UPGRADING REPOSITORY
+######################
+
+1. Several days after, when I update my mirrors I discover new security updates:
+
+  # aptly mirror update xenial-security
+
+2. So it’s time to create new snapshot:
+
+  # aptly snapshot create xenial-security-20180207 from mirror xenial-security
+
+3. And do merge once again:
+
+  # aptly snapshot merge -latest xenial-final-20180207 xenial-main-20180206 xenial-updates-20180206 xenial-security-20180207
+
+4. Now I can update my published repository by switching it to new snapshot:
+
+  # aptly publish switch xenial xenial-final-20180207
+
+
+################
+MAINTENANCE
+################
+
+1. You can drop old snapshots as they’re not used anymore.
+
+  # aptly db cleanup
